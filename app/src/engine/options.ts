@@ -9,6 +9,7 @@ export interface RawItem {
   a: number | string;
   options?: (string | number)[];
   unit?: string;
+  tag?: string; // overrides the generator's chapter (GK buckets mix topics)
 }
 
 /** A fully-built question ready to render. */
@@ -80,7 +81,7 @@ export function buildQuestion(item: RawItem, chapter: string): Question {
   return {
     q: item.q,
     a: String(a),
-    tag: chapter,
+    tag: item.tag ?? chapter,
     unit: item.unit || "",
     options: options.map(String),
   };

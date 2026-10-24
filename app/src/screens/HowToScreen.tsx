@@ -32,7 +32,7 @@ export default function HowToScreen() {
           <Text style={styles.cardTitle}>⚡ The basics</Text>
           <Text style={styles.line}>• Answer as many questions as you can before time runs out.</Text>
           <Text style={styles.line}>• <Text style={styles.good}>+3</Text> for a correct answer, <Text style={styles.bad}>−1</Text> for wrong, 0 for a skip.</Text>
-          <Text style={styles.line}>• Pick a subject (Maths / Physics / Chemistry / Mixed) and a level for difficulty.</Text>
+          <Text style={styles.line}>• Pick a subject (Maths / Physics / Chemistry / GK / Mixed) and a level for difficulty.</Text>
           <Text style={styles.line}>• Levels unlock with coins — win in lower levels to afford higher ones.</Text>
           <Text style={styles.line}>• ⭐ Stars show your mastery of a level (earned in Global Arena).</Text>
         </View>

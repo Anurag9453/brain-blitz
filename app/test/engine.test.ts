@@ -28,7 +28,7 @@ for (const e of ALLGEN) {
 }
 
 const word = ALLGEN.filter((e) => e.w).length;
-const bySubject = { maths: 0, physics: 0, chemistry: 0 } as Record<string, number>;
+const bySubject = { maths: 0, physics: 0, chemistry: 0, gk: 0 } as Record<string, number>;
 for (const e of ALLGEN) bySubject[e.subject]++;
 console.log(`\nGenerators: ${ALLGEN.length} | quick: ${ALLGEN.length - word} | word: ${word}`);
 console.log("by subject:", JSON.stringify(bySubject));

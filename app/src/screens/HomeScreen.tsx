@@ -28,6 +28,7 @@ const SUBJECTS: { key: SubjectSel; label: string }[] = [
   { key: "maths", label: "Maths" },
   { key: "physics", label: "Physics" },
   { key: "chemistry", label: "Chem" },
+  { key: "gk", label: "GK" },
 ];
 
 const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
@@ -347,7 +348,7 @@ const makeStyles = (C: Palette) => StyleSheet.create({
   hero: { alignItems: "center", paddingTop: 10, paddingBottom: 4 },
   kicker: { color: C.accent2, fontWeight: "800", fontSize: 12, letterSpacing: 2 },
   title: { color: C.accent, fontWeight: "900", fontSize: 36, letterSpacing: -1, marginTop: 4 },
-  subjects: { flexDirection: "row", gap: 8, justifyContent: "center", marginTop: 12 },
+  subjects: { flexDirection: "row", flexWrap: "wrap", gap: 8, justifyContent: "center", marginTop: 12 },
   pill: { backgroundColor: C.surface, borderColor: C.line, borderWidth: 1, borderRadius: 999, paddingVertical: 7, paddingHorizontal: 14 },
   pillOn: { backgroundColor: C.accent2, borderColor: C.accent2 },
   pillText: { color: C.muted, fontWeight: "800", fontSize: 13 },

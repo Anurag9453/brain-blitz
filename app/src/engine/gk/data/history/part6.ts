@@ -1,0 +1,111 @@
+// history part6: Medieval ruler drills (dynasties, accession years, key events).
+import type { GkData } from "../../types";
+
+export const PART: GkData = {
+  cat: "history",
+  mcq: {},
+  tables: [
+    {
+      topic: "Delhi Sultanate",
+      cols: ["ruler", "year of accession"],
+      rows: [
+        ["Qutb-ud-din Aibak", "1206", 8],
+        ["Iltutmish", "1211", 10],
+        ["Razia Sultan", "1236", 9],
+        ["Balban", "1266", 10],
+        ["Jalaluddin Khalji", "1290", 10],
+        ["Alauddin Khalji", "1296", 9],
+        ["Ghiyasuddin Tughlaq", "1320", 9],
+        ["Muhammad bin Tughlaq", "1325", 9],
+        ["Firoz Shah Tughlaq", "1351", 10],
+        ["Khizr Khan", "1414", 10],
+        ["Bahlul Lodi", "1451", 10],
+        ["Sikandar Lodi", "1489", 10],
+        ["Ibrahim Lodi", "1517", 9],
+      ],
+      years: [1],
+      asks: [
+        { to: 1, q: ["In which year did {0} become ruler of Delhi?", "{0} came to the throne in ___."] },
+        { to: 0, q: ["Who came to the throne of Delhi in {1}?"] },
+      ],
+    },
+    {
+      topic: "Mughal Empire",
+      cols: ["emperor", "year of accession"],
+      rows: [
+        ["Babur", "1526", 7],
+        ["Humayun", "1530", 9],
+        ["Akbar", "1556", 7],
+        ["Jahangir", "1605", 8],
+        ["Shah Jahan", "1628", 8],
+        ["Aurangzeb", "1658", 8],
+        ["Bahadur Shah I", "1707", 10],
+        ["Muhammad Shah", "1719", 10],
+        ["Bahadur Shah Zafar", "1837", 9],
+      ],
+      years: [1],
+      asks: [
+        { to: 1, q: ["In which year did the Mughal emperor {0} ascend the throne?", "{0} became emperor in ___."] },
+        { to: 0, q: ["Which Mughal emperor came to the throne in {1}?"] },
+      ],
+    },
+    {
+      topic: "Mughal Empire",
+      cols: ["emperor", "year of death"],
+      rows: [
+        ["Babur", "1530", 9],
+        ["Humayun", "1556", 9],
+        ["Akbar", "1605", 8],
+        ["Jahangir", "1627", 9],
+        ["Shah Jahan", "1666", 9],
+        ["Aurangzeb", "1707", 8],
+        ["Bahadur Shah Zafar", "1862", 10],
+      ],
+      years: [1],
+      asks: [
+        { to: 1, q: ["In which year did the Mughal emperor {0} die?", "{0} died in ___."] },
+        { to: 0, q: ["Which Mughal emperor died in {1}?"] },
+      ],
+    },
+    {
+      topic: "Medieval Events",
+      cols: ["event", "year"],
+      rows: [
+        ["Muhammad bin Qasim takes Sindh", "712", 9],
+        ["Mahmud of Ghazni raids Somnath", "1025", 8],
+        ["Timur's invasion of India", "1398", 9],
+        ["Guru Nanak's birth", "1469", 8],
+        ["Founding of the Khalsa", "1699", 8],
+        ["Shivaji's coronation at Raigad", "1674", 8],
+        ["Nadir Shah's invasion of Delhi", "1739", 9],
+        ["Ranjit Singh crowned Maharaja", "1801", 9],
+        ["Death of Shivaji", "1680", 10],
+        ["Shahjahanabad founded", "1639", 10],
+      ],
+      years: [1],
+      asks: [
+        { to: 1, q: ["In which year did this happen: {0}?", "{0} took place in ___."] },
+        { to: 0, q: ["Which of these took place in {1}?"] },
+      ],
+    },
+    {
+      topic: "Vijayanagara & Bahmani",
+      cols: ["ruler", "dynasty/kingdom"],
+      rows: [
+        ["Harihara I", "Vijayanagara (Sangama)", 9],
+        ["Bukka Raya I", "Vijayanagara (Sangama)", 10],
+        ["Deva Raya II", "Vijayanagara (Sangama)", 10],
+        ["Krishnadeva Raya", "Vijayanagara (Tuluva)", 7],
+        ["Achyuta Deva Raya", "Vijayanagara (Tuluva)", 10],
+        ["Mahmud Gawan", "Bahmani", 10],
+        ["Ibrahim Adil Shah II", "Bijapur", 10],
+        ["Muhammad Quli Qutb Shah", "Golconda", 9],
+        ["Malik Ambar", "Ahmadnagar", 10],
+      ],
+      asks: [
+        { to: 1, q: ["{0} is associated with which kingdom or dynasty?"] },
+      ],
+      extra: { 1: ["Vijayanagara (Aravidu)", "Mughal", "Berar"] },
+    },
+  ],
+};

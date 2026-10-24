@@ -6,8 +6,9 @@
 import { rnd, pick, shuffle, gcd, isPrime, decimals, fracStr, ratioStr, random } from "./rng";
 import { optsFrom, uniqOpts, RawItem } from "./options";
 import { PHYSICS, CHEMISTRY } from "./science";
+import { GK } from "./gk";
 
-export type Subject = "maths" | "physics" | "chemistry";
+export type Subject = "maths" | "physics" | "chemistry" | "gk";
 
 export interface Gen {
   cls: number; // class level (6–10) — the difficulty band
@@ -121,6 +122,7 @@ export const ALLGEN: Gen[] = [
   ...MATHS_RAW.map((g): Gen => ({ ...g, subject: "maths" })),
   ...PHYSICS,
   ...CHEMISTRY,
+  ...GK,
 ];
 
 /** Quick questions for the given class bands AND subjects (word problems excluded). */

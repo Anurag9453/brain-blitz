@@ -42,7 +42,7 @@ export default function LobbyScreen() {
       <Text style={styles.share}>Share this code with friends so they can join.</Text>
       {!!room?.subject && (
         <Text style={styles.subject}>
-          {room.subject.charAt(0).toUpperCase() + room.subject.slice(1)} · {Math.round((room.duration_seconds ?? 120) / 60)}-min match
+          {room.subject === "gk" ? "General Knowledge" : room.subject.charAt(0).toUpperCase() + room.subject.slice(1)} ·{Math.round((room.duration_seconds ?? 120) / 60)}-min match
         </Text>
       )}
 

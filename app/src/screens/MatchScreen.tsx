@@ -33,6 +33,11 @@ export default function MatchScreen() {
   const [phase, setPhase] = useState<"count" | "play">("count");
   const [count, setCount] = useState(3);
   const [q, setQ] = useState<Question | null>(null);
+  // GK text is much longer than maths — shrink to fit; short questions keep full size.
+  const qLen = q?.q.length ?? 0;
+  const qSize = qLen > 90 ? 22 : qLen > 50 ? 27 : 34;
+  const optLen = Math.max(0, ...(q?.options ?? []).map((o) => o.length + (q?.unit.length ?? 0)));
+  const optSize = optLen > 18 ? 15 : optLen > 10 ? 18 : 24;
   const [qNo, setQNo] = useState(0);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
@@ -258,7 +263,7 @@ export default function MatchScreen() {
           }}
         >
           <Text style={styles.qtag}>{q?.tag}</Text>
-          <Text style={styles.question}>{q?.q}</Text>
+          <Text style={[styles.question, { fontSize: qSize }]}>{q?.q}</Text>
         </Animated.View>
       </View>
 
@@ -282,7 +287,7 @@ export default function MatchScreen() {
                 },
               ]}
             >
-              <Text style={[styles.optText, isCorrect && { color: C.correct }, isWrong && { color: C.wrong }]}>
+              <Text style={[styles.optText, { fontSize: optSize }, isCorrect && { color: C.correct }, isWrong && { color: C.wrong }]}>
                 {opt}
                 {q.unit}
               </Text>
@@ -338,11 +343,11 @@ const makeStyles = (C: Palette) => StyleSheet.create({
   options: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 12 },
   opt: {
     width: "48%", backgroundColor: C.surface, borderColor: C.line, borderWidth: 1.5,
-    borderRadius: 16, paddingVertical: 22, alignItems: "center",
+    borderRadius: 16, paddingVertical: 22, paddingHorizontal: 8, alignItems: "center", justifyContent: "center",
   },
   optCorrect: { backgroundColor: "rgba(61,220,151,0.18)", borderColor: C.correct },
   optWrong: { backgroundColor: "rgba(255,92,92,0.16)", borderColor: C.wrong },
-  optText: { color: C.text, fontWeight: "800", fontSize: 24 },
+  optText: { color: C.text, fontWeight: "800", fontSize: 24, textAlign: "center" },
   footer: { flexDirection: "row", gap: 10, marginTop: 12 },
   skip: { flex: 1, borderColor: C.line, borderWidth: 1.5, borderRadius: 14, paddingVertical: 14, alignItems: "center" },
   skipText: { color: C.muted, fontWeight: "800", fontSize: 15 },
