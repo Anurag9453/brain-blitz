@@ -1,0 +1,10 @@
+# Minimal Supabase CLI config. Used for `supabase start` (local dev) and
+# `supabase db push` (deploy migrations). For a hosted project, the key thing
+# to mirror in the Dashboard is: Authentication → enable Anonymous sign-ins.
+project_id = "mathblitz"
+
+[auth]
+enable_anonymous_sign_ins = true
+
+[db]
+major_version = 15

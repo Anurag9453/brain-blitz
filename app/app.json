@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Brain Blitz",
+    "slug": "mathblitz",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "mathblitz",
+    "userInterfaceStyle": "dark",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mathblitz.app"
+    },
+    "android": {
+      "package": "com.mathblitz.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#17112E"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-asset",
+      "expo-audio",
+      "expo-localization",
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "resizeMode": "contain",
+          "backgroundColor": "#17112E"
+        }
+      ]
+    ]
+  }
+}
