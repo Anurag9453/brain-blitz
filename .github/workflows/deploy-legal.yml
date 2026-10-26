@@ -3,9 +3,6 @@ name: Deploy Legal Pages to GitHub Pages
 on:
   push:
     branches: ["main"]
-    paths:
-      - "legal/**"
-      - ".github/workflows/deploy-legal.yml"
   workflow_dispatch:
 
 permissions:
