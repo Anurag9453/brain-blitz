@@ -13,8 +13,8 @@ This document contains ready-to-paste metadata, descriptions, compliance questio
 - **Primary Category:** Games → Trivia / Educational
 - **Secondary Category:** Education
 - **Support Email:** `support@gyanblitz.app`
-- **Privacy Policy URL:** `https://anurag9453.github.io/brain-blitz/privacy-policy.html`
-- **Terms of Service URL:** `https://anurag9453.github.io/brain-blitz/terms-of-service.html`
+- **Privacy Policy URL:** `https://anurag9453.github.io/gyan-blitz/privacy-policy.html`
+- **Terms of Service URL:** `https://anurag9453.github.io/gyan-blitz/terms-of-service.html`
 
 ### Short Description (Google Play — Max 80 chars)
 ```text

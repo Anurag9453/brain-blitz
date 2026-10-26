@@ -4,7 +4,7 @@
 
 const BASE_URL = (
   process.env.EXPO_PUBLIC_LEGAL_BASE_URL ||
-  "https://anurag9453.github.io/brain-blitz"
+  "https://anurag9453.github.io/gyan-blitz"
 ).replace(/\/$/, "");
 
 export const LEGAL_URLS = {
