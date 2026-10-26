@@ -83,7 +83,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
       <View style={styles.topbar}>
-        <Pressable style={styles.profile} onPress={() => { SFX.play("tap"); openLocker(); }}>
+        <Pressable style={styles.profile} onPress={() => { SFX.play("tap"); setShowAccount(true); }}>
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>{(username || "P").charAt(0).toUpperCase()}</Text>
             <View style={styles.lvBadge}>
@@ -114,6 +114,9 @@ export default function HomeScreen() {
           </View>
         </Pressable>
         <View style={styles.topRight}>
+          <Pressable onPress={() => { SFX.play("tap"); openLocker(); }} style={styles.iconBtn} hitSlop={8}>
+            <Text style={styles.iconTxt}>🎨</Text>
+          </Pressable>
           <Pressable onPress={() => { SFX.play("tap"); openHowTo(); }} style={styles.iconBtn} hitSlop={8}>
             <Text style={styles.iconTxt}>?</Text>
           </Pressable>

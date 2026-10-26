@@ -156,6 +156,35 @@ export async function deleteUserAccount(): Promise<void> {
   await ensureSession();
 }
 
+export interface PurchaseRecord {
+  id: string;
+  pack_id: string;
+  amount_inr: number;
+  coins: number;
+  order_id: string | null;
+  payment_id: string | null;
+  status: "created" | "completed" | "failed";
+  created_at: string;
+  completed_at: string | null;
+}
+
+/** Fetch user's order and purchase history for invoices. */
+export async function fetchUserPurchases(): Promise<PurchaseRecord[]> {
+  try {
+    const { data, error } = await supabase
+      .from("purchases")
+      .select("id, pack_id, amount_inr, coins, order_id, payment_id, status, created_at, completed_at")
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.warn("fetchUserPurchases error:", error);
+      return [];
+    }
+    return (data || []) as PurchaseRecord[];
+  } catch {
+    return [];
+  }
+}
+
 export async function fetchLevels(): Promise<Level[]> {
   const { data, error } = await supabase.from("levels").select("*").order("n");
   if (error) throw error;
