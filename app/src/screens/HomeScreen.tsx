@@ -16,6 +16,7 @@ import type { SubjectSel } from "../state/store";
 import * as SFX from "../lib/sfx";
 import AppDialog from "../components/AppDialog";
 import DailyDialog from "../components/DailyDialog";
+import AccountModal from "../components/AccountModal";
 import { nextQuestion } from "../engine";
 import { poolFor } from "../engine/generators";
 import type { Question } from "../engine/options";
@@ -40,13 +41,14 @@ const DIFFICULTY = ["Warm-up", "Easy", "Medium", "Hard", "Expert", "Master"];
 export default function HomeScreen() {
   const C = useThemeC();
   const styles = makeStyles(C);
-  const { coins, levels, progress, selLevel, selectLevel, goModes, error, soundOn, toggleSound, theme, toggleTheme, dailyAvailable, claimDaily, subject, setSubject, username, xp, winStreak, leagueTier, leaguePoints, league, seasonResult, clearSeasonResult, openLeague, openLocker, pass, openPass, openHowTo, openStore } =
+  const { coins, levels, progress, selLevel, selectLevel, goModes, error, soundOn, toggleSound, theme, toggleTheme, dailyAvailable, claimDaily, subject, setSubject, username, xp, winStreak, leagueTier, leaguePoints, league, seasonResult, clearSeasonResult, openLeague, openLocker, pass, openPass, openHowTo, openStore, authUser } =
     useGame();
   const acct = accountLevel(xp);
   const tier = tierMeta(leagueTier);
   const seasonTier = seasonResult ? tierMeta(seasonResult.to_tier) : null;
 
   const [dailyQ, setDailyQ] = useState<Question | null>(null);
+  const [showAccount, setShowAccount] = useState(false);
   const onClaimDaily = () => {
     SFX.play("tap");
     // A fresh, approachable mixed-subject question each time the challenge opens.
@@ -89,9 +91,20 @@ export default function HomeScreen() {
             </View>
           </View>
           <View style={styles.profileText}>
-            <Text style={styles.username} numberOfLines={1}>
-              {username || "Player"}
-            </Text>
+            <View style={styles.nameRow}>
+              <Text style={styles.username} numberOfLines={1}>
+                {username || "Player"}
+              </Text>
+              <Pressable
+                onPress={() => { SFX.play("tap"); setShowAccount(true); }}
+                style={[styles.accountChip, authUser?.isAnonymous ? styles.accountChipGuest : styles.accountChipSaved]}
+                hitSlop={6}
+              >
+                <Text style={[styles.accountChipText, authUser?.isAnonymous ? styles.accountChipGuestText : styles.accountChipSavedText]}>
+                  {authUser?.isAnonymous ? "Save 💾" : "Saved ✓"}
+                </Text>
+              </Pressable>
+            </View>
             <View style={styles.xpRow}>
               <Text style={styles.lvText}>LV {acct.level}</Text>
               <View style={styles.xpTrack}>
@@ -288,6 +301,11 @@ export default function HomeScreen() {
         onClose={() => setDailyQ(null)}
       />
 
+      <AccountModal
+        visible={showAccount}
+        onClose={() => setShowAccount(false)}
+      />
+
       <AppDialog
         visible={!!seasonResult && seasonResult.outcome !== "stayed"}
         emoji={seasonTier?.emoji}
@@ -325,7 +343,32 @@ const makeStyles = (C: Palette) => StyleSheet.create({
   },
   lvBadgeText: { color: C.goldText, fontWeight: "900", fontSize: 10 },
   profileText: { flexShrink: 1, gap: 3 },
+  nameRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   username: { color: C.text, fontWeight: "800", fontSize: 15, flexShrink: 1 },
+  accountChip: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+    borderWidth: 1,
+  },
+  accountChipGuest: {
+    backgroundColor: "rgba(255,197,61,0.12)",
+    borderColor: C.accent,
+  },
+  accountChipSaved: {
+    backgroundColor: "rgba(61,220,151,0.12)",
+    borderColor: C.correct,
+  },
+  accountChipText: {
+    fontSize: 9,
+    fontWeight: "800",
+  },
+  accountChipGuestText: {
+    color: C.accent,
+  },
+  accountChipSavedText: {
+    color: C.correct,
+  },
   xpRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   lvText: { color: C.muted, fontWeight: "800", fontSize: 10, letterSpacing: 0.5 },
   xpTrack: { width: 64, height: 5, borderRadius: 3, backgroundColor: C.line, overflow: "hidden" },

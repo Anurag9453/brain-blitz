@@ -103,12 +103,57 @@ export interface LeagueState {
   season_result: SeasonResult | null;
 }
 
+export interface AuthUser {
+  id: string;
+  email?: string;
+  isAnonymous: boolean;
+}
+
 /** Ensure we have a session; sign in anonymously the first time. */
 export async function ensureSession(): Promise<void> {
   const { data } = await supabase.auth.getSession();
   if (data.session) return;
   const { error } = await supabase.auth.signInAnonymously();
   if (error) throw error;
+}
+
+/** Get the currently logged-in user and whether their account is anonymous. */
+export async function getCurrentUser(): Promise<AuthUser | null> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+  return {
+    id: user.id,
+    email: user.email,
+    isAnonymous: !!user.is_anonymous,
+  };
+}
+
+/** Convert anonymous user to a permanent account by attaching email and password. */
+export async function linkEmailAccount(email: string, password: string): Promise<void> {
+  const { error } = await supabase.auth.updateUser({ email, password });
+  if (error) throw error;
+}
+
+/** Sign into an existing account (replaces current session). */
+export async function signInWithEmail(email: string, password: string): Promise<void> {
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) throw error;
+}
+
+/** Sign out and revert to a new clean guest session. */
+export async function signOutUser(): Promise<void> {
+  await supabase.auth.signOut();
+  await ensureSession();
+}
+
+/** Permanently delete account and all data (Apple Guideline 5.1.1(v) compliance) */
+export async function deleteUserAccount(): Promise<void> {
+  const { error } = await supabase.rpc("delete_user_account");
+  if (error) throw error;
+  await supabase.auth.signOut();
+  await ensureSession();
 }
 
 export async function fetchLevels(): Promise<Level[]> {
@@ -404,3 +449,69 @@ export async function fetchLeaderboard(
   if (error) throw error;
   return (data ?? []) as { username: string; best: number }[];
 }
+
+/* ---------------- In-App Purchases (Razorpay) ---------------- */
+
+export interface PurchaseResult {
+  success: boolean;
+  already_credited: boolean;
+  coins_added: number;
+  new_balance: number;
+}
+
+export interface RazorpayOrderData {
+  order_id: string;
+  amount: number;
+  currency: string;
+  key_id: string;
+  pack_id: string;
+}
+
+/** Create official Razorpay Order via Supabase Edge Function (server-authenticated) */
+export async function createRazorpayOrder(packId: string): Promise<RazorpayOrderData> {
+  const { data, error } = await supabase.functions.invoke("create-razorpay-order", {
+    body: { pack_id: packId },
+  });
+  if (error) throw error;
+  if (data?.error) throw new Error(data.error);
+  return data as RazorpayOrderData;
+}
+
+/** Verify HMAC-SHA256 signature and credit coins via Supabase Edge Function */
+export async function verifyRazorpayPayment(params: {
+  order_id: string;
+  payment_id: string;
+  signature: string;
+}): Promise<PurchaseResult> {
+  const { data, error } = await supabase.functions.invoke("verify-razorpay-payment", {
+    body: params,
+  });
+  if (error) throw error;
+  if (data?.error) throw new Error(data.error);
+  return data as PurchaseResult;
+}
+
+
+/* ---------------- Question Feedback & Reporting ---------------- */
+
+export async function reportQuestion(params: {
+  question: string;
+  tag: string;
+  correct: string;
+  chosen?: string | null;
+  reason: string;
+  comments?: string;
+}): Promise<{ ok: boolean }> {
+  const { data, error } = await supabase.rpc("report_question", {
+    p_question: params.question,
+    p_tag: params.tag,
+    p_correct: params.correct,
+    p_chosen: params.chosen ?? null,
+    p_reason: params.reason,
+    p_comments: params.comments ?? null,
+  });
+  if (error) throw error;
+  return data as { ok: boolean };
+}
+
+

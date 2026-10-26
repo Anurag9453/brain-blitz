@@ -128,7 +128,7 @@ export const ALLGEN: Gen[] = [
 /** Quick questions for the given class bands AND subjects (word problems excluded). */
 export function poolFor(
   cls: number[],
-  subjects: Subject[] = ["maths", "physics", "chemistry"]
+  subjects: Subject[] = ["maths", "physics", "chemistry", "gk"]
 ): Gen[] {
   return ALLGEN.filter((e) => cls.includes(e.cls) && !e.w && subjects.includes(e.subject));
 }
@@ -136,7 +136,7 @@ export function poolFor(
 /** Everything for the bands/subjects INCLUDING word problems (used by Marathon). */
 export function poolForAll(
   cls: number[],
-  subjects: Subject[] = ["maths", "physics", "chemistry"]
+  subjects: Subject[] = ["maths", "physics", "chemistry", "gk"]
 ): Gen[] {
   return ALLGEN.filter((e) => cls.includes(e.cls) && subjects.includes(e.subject));
 }

@@ -21,10 +21,12 @@ import LockerScreen from "./src/screens/LockerScreen";
 import SeasonPassScreen from "./src/screens/SeasonPassScreen";
 import { initSfx } from "./src/lib/sfx";
 import { useThemeC } from "./src/theme";
+import ErrorBoundary from "./src/components/ErrorBoundary";
 
 export default function App() {
   const screen = useGame((s) => s.screen);
   const init = useGame((s) => s.init);
+  const goHome = useGame((s) => s.goHome);
   const C = useThemeC();
   const [splash, setSplash] = useState(true);
 
@@ -35,36 +37,38 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style={C.mode === "dark" ? "light" : "dark"} />
-      <LinearGradient colors={C.bg} start={{ x: 0.5, y: 0 }} end={{ x: 0.5, y: 1 }} style={styles.bg}>
-        <View style={styles.app}>
-          {splash ? (
-            <SplashScreen onDone={() => setSplash(false)} />
-          ) : (
-            <>
-              {screen === "loading" && (
-                <View style={styles.center}>
-                  <ActivityIndicator color={C.accent} size="large" />
-                </View>
-              )}
-              {screen === "onboarding" && <OnboardingScreen />}
-              {screen === "home" && <HomeScreen />}
-              {screen === "howto" && <HowToScreen />}
-              {screen === "store" && <StoreScreen />}
-              {screen === "modes" && <ModeScreen />}
-              {screen === "friends" && <FriendsScreen />}
-              {screen === "lobby" && <LobbyScreen />}
-              {screen === "match" && <MatchScreen />}
-              {screen === "result" && <ResultScreen />}
-              {screen === "friendsResult" && <FriendsResultScreen />}
-              {screen === "review" && <ReviewScreen />}
-              {screen === "league" && <LeagueScreen />}
-              {screen === "locker" && <LockerScreen />}
-              {screen === "pass" && <SeasonPassScreen />}
-            </>
-          )}
-        </View>
-      </LinearGradient>
+      <ErrorBoundary onReset={goHome}>
+        <StatusBar style={C.mode === "dark" ? "light" : "dark"} />
+        <LinearGradient colors={C.bg} start={{ x: 0.5, y: 0 }} end={{ x: 0.5, y: 1 }} style={styles.bg}>
+          <View style={styles.app}>
+            {splash ? (
+              <SplashScreen onDone={() => setSplash(false)} />
+            ) : (
+              <>
+                {screen === "loading" && (
+                  <View style={styles.center}>
+                    <ActivityIndicator color={C.accent} size="large" />
+                  </View>
+                )}
+                {screen === "onboarding" && <OnboardingScreen />}
+                {screen === "home" && <HomeScreen />}
+                {screen === "howto" && <HowToScreen />}
+                {screen === "store" && <StoreScreen />}
+                {screen === "modes" && <ModeScreen />}
+                {screen === "friends" && <FriendsScreen />}
+                {screen === "lobby" && <LobbyScreen />}
+                {screen === "match" && <MatchScreen />}
+                {screen === "result" && <ResultScreen />}
+                {screen === "friendsResult" && <FriendsResultScreen />}
+                {screen === "review" && <ReviewScreen />}
+                {screen === "league" && <LeagueScreen />}
+                {screen === "locker" && <LockerScreen />}
+                {screen === "pass" && <SeasonPassScreen />}
+              </>
+            )}
+          </View>
+        </LinearGradient>
+      </ErrorBoundary>
     </SafeAreaProvider>
   );
 }

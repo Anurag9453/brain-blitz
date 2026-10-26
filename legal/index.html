@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal & Compliance - MathBlitz</title>
+  <style>
+    :root {
+      --bg: #0F0A1C;
+      --card: #1A1330;
+      --card-border: #2C2250;
+      --text: #F1ECFF;
+      --muted: #A99FD0;
+      --accent: #FFC53D;
+      --accent2: #FF4D8D;
+      --line: #3A2F66;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      max-width: 600px;
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 12px;
+      font-weight: 800;
+    }
+    p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .btn {
+      display: block;
+      background: var(--card-border);
+      color: var(--text);
+      text-decoration: none;
+      padding: 16px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 16px;
+      border: 1px solid var(--line);
+      transition: all 0.2s ease;
+    }
+    .btn:hover {
+      background: rgba(255, 197, 61, 0.12);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #3A2700;
+      border-color: var(--accent);
+    }
+    .btn-primary:hover {
+      background: #E6B033;
+      color: #3A2700;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">🧮 MathBlitz</div>
+    <h1>Legal & Policy Center</h1>
+    <p>Official policies, compliance documentation, and terms for players, students, and parents.</p>
+
+    <div class="btn-group">
+      <a href="privacy-policy.html" class="btn btn-primary">🛡️ Privacy Policy (COPPA & DPDP)</a>
+      <a href="terms-of-service.html" class="btn">📜 Terms of Service & Fair Play</a>
+    </div>
+
+    <div class="footer">
+      Support & Inquiries: <a href="mailto:support@mathblitz.app">support@mathblitz.app</a><br>
+      © 2026 MathBlitz. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>

@@ -105,6 +105,12 @@ export const PART: GkData = {
       ["The currency of Afghanistan is the ___.", "Afghani", "Rupee", "Rial", "Taka", 9],
       ["The currency of Myanmar is the ___.", "Kyat", "Baht", "Kip", "Dong", 10],
       ["The currency of Vietnam is the ___.", "Dong", "Kyat", "Baht", "Kip", 10],
+      ["In banking, what does ATM stand for?", "Automated Teller Machine", "Any Time Money", "Auto Transfer Mode", "Account Teller Machine", 6],
+      ["The system where goods are exchanged directly for other goods without money is called ___.", "Barter system", "Banking system", "Credit system", "Monetary system", 6],
+      ["A place where people can safely deposit, save, or withdraw money is a ___.", "Bank", "Factory", "Stock market", "Treasury", 6],
+      ["The central banking institution that regulates the monetary policy of India is the ___.", "Reserve Bank of India (RBI)", "State Bank of India (SBI)", "NITI Aayog", "SEBI", 6],
+      ["Money paid to the government by citizens to fund public services like roads and schools is called ___.", "Tax", "Loan", "Donation", "Interest", 6],
+      ["A financial plan that balances expected income and expenses over a given period is a ___.", "Budget", "Invoice", "Receipt", "Cheque", 6],
     ],
     "Schemes and Programmes": [
       ["PM Jan Dhan Yojana aims at ___.", "Financial inclusion", "Free rations", "Housing", "Road building", 7],

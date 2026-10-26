@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Pressable, ScrollView, StyleSheet } from "react-native";
+import { View, Text, Pressable, ScrollView, StyleSheet, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useGame } from "../state/store";
 import { useThemeC, type Palette } from "../theme";
@@ -90,6 +90,37 @@ export default function HowToScreen() {
           <Text style={styles.cardTitle}>🪙 Coins</Text>
           <Text style={styles.line}>• Every match costs an entry fee (same for all modes at a level).</Text>
           <Text style={styles.line}>• Top up with your daily reward, and by winning matches.</Text>
+          <Text style={styles.line}>• Coins are purely virtual points for playing matches and unlocking cosmetic skins. They carry no monetary or cash-out value.</Text>
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>🛡️ Privacy, Fair Play & Support</Text>
+          <Text style={styles.line}>• Child-directed & privacy-first: MathBlitz never sells or shares player personal information.</Text>
+          <Text style={styles.line}>• Maths & Science questions are procedurally generated for school syllabus levels (Classes 6–10). General Knowledge questions cover curated school topics — use the 🚩 Report button anytime to flag an issue.</Text>
+          <Text style={styles.line}>
+            • Found an issue or need help? Contact us at{" "}
+            <Text
+              style={styles.linkText}
+              onPress={() => Linking.openURL("mailto:support@mathblitz.app")}
+            >
+              support@mathblitz.app
+            </Text>.
+          </Text>
+          <View style={styles.legalLinksRow}>
+            <Pressable
+              onPress={() => Linking.openURL("https://mathblitz.app/privacy-policy.html")}
+              hitSlop={8}
+            >
+              <Text style={styles.legalLink}>Privacy Policy</Text>
+            </Pressable>
+            <Text style={styles.legalDot}>•</Text>
+            <Pressable
+              onPress={() => Linking.openURL("https://mathblitz.app/terms-of-service.html")}
+              hitSlop={8}
+            >
+              <Text style={styles.legalLink}>Terms of Service</Text>
+            </Pressable>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -105,4 +136,24 @@ const makeStyles = (C: Palette) => StyleSheet.create({
   line: { color: C.muted, fontSize: 14, lineHeight: 20 },
   good: { color: C.correct, fontWeight: "800" },
   bad: { color: C.wrong, fontWeight: "800" },
+  linkText: { color: C.accent, fontWeight: "800", textDecorationLine: "underline" },
+  legalLinksRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginTop: 6,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: C.line,
+  },
+  legalLink: {
+    color: C.accent,
+    fontWeight: "700",
+    fontSize: 13,
+    textDecorationLine: "underline",
+  },
+  legalDot: {
+    color: C.muted,
+    fontSize: 12,
+  },
 });

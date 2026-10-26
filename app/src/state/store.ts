@@ -28,7 +28,7 @@ export interface ReviewItem {
 type Mode = "arena" | "cpu" | "friends" | "marathon" | "practice";
 export type SubjectSel = Subject | "mixed";
 
-const ALL_SUBJECTS: Subject[] = ["maths", "physics", "chemistry"];
+const ALL_SUBJECTS: Subject[] = ["maths", "physics", "chemistry", "gk"];
 const resolveSubjects = (s: SubjectSel): Subject[] => (s === "mixed" ? ALL_SUBJECTS : [s]);
 
 interface Common {
@@ -82,9 +82,15 @@ interface GameState {
   // post-match answer review
   lastReview: ReviewItem[];
   reviewReturn: Screen;
+  authUser: api.AuthUser | null;
 
   init: () => Promise<void>;
   setUsername: (name: string) => Promise<void>;
+  linkAccount: (email: string, pass: string) => Promise<{ ok: boolean; message?: string }>;
+  signInAccount: (email: string, pass: string) => Promise<{ ok: boolean; message?: string }>;
+  signOutAccount: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
+  refreshAuth: () => Promise<void>;
   openHowTo: () => void;
   selectLevel: (n: number) => void;
   setSubject: (s: SubjectSel) => void;
@@ -120,6 +126,12 @@ interface GameState {
   openStore: () => void;
   closeStore: () => void;
   claimAd: () => Promise<api.AdReward>;
+  completePurchase: (
+    packId: string,
+    paymentId: string,
+    orderId?: string | null,
+    signature?: string | null
+  ) => Promise<api.PurchaseResult>;
   // friends
   openFriends: () => void;
   hostRoom: () => Promise<void>;
@@ -222,10 +234,12 @@ export const useGame = create<GameState>((set, get) => ({
   room: null,
   lastReview: [],
   reviewReturn: "result",
+  authUser: null,
 
   init: async () => {
     try {
       await api.ensureSession();
+      const authUser = await api.getCurrentUser();
       // Coins come from ensure_profile (authoritative; self-heals a missing row).
       const profile = await api.ensureProfile();
 
@@ -244,6 +258,7 @@ export const useGame = create<GameState>((set, get) => ({
       const named = (await AsyncStorage.getItem(NAMED_KEY)) === "1";
       const savedTheme = (await AsyncStorage.getItem(THEME_KEY)) as ThemeMode | null;
       set({
+        authUser,
         levels: lv,
         coins: profile.coins,
         username: profile.username,
@@ -277,6 +292,43 @@ export const useGame = create<GameState>((set, get) => ({
     } catch {}
     await AsyncStorage.setItem(NAMED_KEY, "1");
     set({ username: clean, screen: "home" });
+  },
+
+  linkAccount: async (email: string, pass: string) => {
+    try {
+      await api.linkEmailAccount(email, pass);
+      const user = await api.getCurrentUser();
+      set({ authUser: user });
+      return { ok: true };
+    } catch (err: any) {
+      return { ok: false, message: err?.message || "Failed to link account." };
+    }
+  },
+
+  signInAccount: async (email: string, pass: string) => {
+    try {
+      await api.signInWithEmail(email, pass);
+      await get().init();
+      return { ok: true };
+    } catch (err: any) {
+      return { ok: false, message: err?.message || "Invalid email or password." };
+    }
+  },
+
+  signOutAccount: async () => {
+    await api.signOutUser();
+    await get().init();
+  },
+
+  deleteAccount: async () => {
+    await AsyncStorage.clear();
+    await api.deleteUserAccount();
+    await get().init();
+  },
+
+  refreshAuth: async () => {
+    const user = await api.getCurrentUser();
+    set({ authUser: user });
   },
 
   openHowTo: () => set({ screen: "howto" }),
@@ -589,6 +641,17 @@ export const useGame = create<GameState>((set, get) => ({
   claimAd: async () => {
     const res = await api.claimAdReward();
     if (res.ok && res.coins != null) set({ coins: res.coins });
+    return res;
+  },
+  completePurchase: async (packId, paymentId, orderId, signature) => {
+    const res = await api.verifyRazorpayPayment({
+      payment_id: paymentId,
+      order_id: orderId ?? "",
+      signature: signature ?? "",
+    });
+    if (res.success && res.new_balance != null) {
+      set({ coins: res.new_balance });
+    }
     return res;
   },
 
