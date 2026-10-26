@@ -72,3 +72,27 @@ export async function clearCrashLogs(): Promise<void> {
     await AsyncStorage.removeItem(LOGS_KEY);
   } catch {}
 }
+
+/**
+ * Lightweight privacy-safe event analytics (stored in app_logs with level='info').
+ */
+export async function logEvent(
+  eventName: string,
+  props?: Record<string, any>
+): Promise<void> {
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    const userId = session?.user?.id || null;
+
+    await supabase.from("app_logs").insert({
+      user_id: userId,
+      level: "info",
+      message: eventName.substring(0, 120),
+      extra: props || null,
+    });
+  } catch {
+    // Non-blocking telemetry
+  }
+}

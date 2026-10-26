@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { logError } from "../lib/logger";
+import { LEGAL_URLS } from "../lib/legal";
 
 interface Props {
   children: ReactNode;
@@ -56,7 +57,7 @@ export default class ErrorBoundary extends Component<Props, State> {
     const body = encodeURIComponent(
       `Hello MathBlitz Support,\n\nI encountered the following issue while playing:\n\nError: ${errorText}\n\nStack:\n${stackText.substring(0, 1000)}\n\nPlatform: ${Platform.OS} ${Platform.Version}`
     );
-    Linking.openURL(`mailto:support@mathblitz.app?subject=Crash%20Report&body=${body}`).catch(() => {});
+    Linking.openURL(`mailto:${LEGAL_URLS.supportEmail}?subject=Crash%20Report&body=${body}`).catch(() => {});
   };
 
   render() {

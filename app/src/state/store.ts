@@ -24,6 +24,7 @@ export interface ReviewItem {
   chosen: string | null; // what the player tapped (null = skipped / ran out of time)
   correct: string;
   ok: boolean;
+  ms?: number; // reaction time in milliseconds
 }
 type Mode = "arena" | "cpu" | "friends" | "marathon" | "practice";
 export type SubjectSel = Subject | "mixed";
@@ -346,11 +347,15 @@ export const useGame = create<GameState>((set, get) => ({
   beginMatch: async () => {
     const { selLevel, levels, subject } = get();
     const level = levels[selLevel - 1];
+    const subs = resolveSubjects(subject);
     try {
-      const { match_id, coins } = await api.startMatch(level.n);
+      const { match_id, coins, seed } = await api.startMatch(level.n);
+      const questions = seed
+        ? generateSet(poolFor(level.cls, subs), Math.max(120, Math.ceil(level.time / 1.2)), seed)
+        : [];
       set({
         matchId: match_id, coins, activeLevel: level, activeMode: "arena",
-        activeSubjects: resolveSubjects(subject),
+        activeSubjects: subs, activeQuestions: questions,
         activeDurationMs: level.time * 1000, screen: "match", error: null,
       });
     } catch (e: any) {
@@ -364,11 +369,15 @@ export const useGame = create<GameState>((set, get) => ({
   beginDuel: async (mode) => {
     const { selLevel, levels, subject, duelSeconds } = get();
     const level = levels[selLevel - 1];
+    const subs = resolveSubjects(subject);
     try {
-      const { match_id, coins, opponent_target } = await api.startDuel(level.n, mode, duelSeconds);
+      const { match_id, coins, opponent_target, seed } = await api.startDuel(level.n, mode, duelSeconds);
+      const questions = seed
+        ? generateSet(poolFor(level.cls, subs), Math.max(120, Math.ceil(duelSeconds / 1.2)), seed)
+        : [];
       set({
         matchId: match_id, coins, activeLevel: level, activeMode: mode,
-        activeSubjects: resolveSubjects(subject),
+        activeSubjects: subs, activeQuestions: questions,
         activeDurationMs: duelSeconds * 1000, opponentTarget: opponent_target, screen: "match", error: null,
       });
     } catch (e: any) {
@@ -383,7 +392,12 @@ export const useGame = create<GameState>((set, get) => ({
     const { matchId, activeLevel } = get();
     if (!matchId || !activeLevel) return;
     try {
-      const res = await api.finishMatch(matchId, correct, wrong, attempted);
+      const answerLog: api.AnswerLogEntry[] = review.map((r) => ({
+        chosen: r.chosen,
+        ok: r.ok,
+        ms: Math.max(250, r.ms ?? 800),
+      }));
+      const res = await api.finishMatch(matchId, correct, wrong, attempted, answerLog);
       awardLeaguePoints(res.score, set, get);
       awardPassPoints(correct, set, get);
       set((s) => ({
@@ -412,7 +426,12 @@ export const useGame = create<GameState>((set, get) => ({
     const { matchId, activeLevel } = get();
     if (!matchId || !activeLevel) return;
     try {
-      const res = await api.finishDuel(matchId, correct, wrong, attempted);
+      const answerLog: api.AnswerLogEntry[] = review.map((r) => ({
+        chosen: r.chosen,
+        ok: r.ok,
+        ms: Math.max(250, r.ms ?? 800),
+      }));
+      const res = await api.finishDuel(matchId, correct, wrong, attempted, answerLog);
       awardLeaguePoints(res.player_score, set, get);
       awardPassPoints(correct, set, get);
       set((s) => ({

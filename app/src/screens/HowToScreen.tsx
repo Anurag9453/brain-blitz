@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Pressable, ScrollView, StyleSheet, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useGame } from "../state/store";
+import { LEGAL_URLS } from "../lib/legal";
 import { useThemeC, type Palette } from "../theme";
 
 export default function HowToScreen() {
@@ -101,21 +102,21 @@ export default function HowToScreen() {
             • Found an issue or need help? Contact us at{" "}
             <Text
               style={styles.linkText}
-              onPress={() => Linking.openURL("mailto:support@mathblitz.app")}
+              onPress={() => Linking.openURL(`mailto:${LEGAL_URLS.supportEmail}`)}
             >
-              support@mathblitz.app
+              {LEGAL_URLS.supportEmail}
             </Text>.
           </Text>
           <View style={styles.legalLinksRow}>
             <Pressable
-              onPress={() => Linking.openURL("https://mathblitz.app/privacy-policy.html")}
+              onPress={() => Linking.openURL(LEGAL_URLS.privacy)}
               hitSlop={8}
             >
               <Text style={styles.legalLink}>Privacy Policy</Text>
             </Pressable>
             <Text style={styles.legalDot}>•</Text>
             <Pressable
-              onPress={() => Linking.openURL("https://mathblitz.app/terms-of-service.html")}
+              onPress={() => Linking.openURL(LEGAL_URLS.terms)}
               hitSlop={8}
             >
               <Text style={styles.legalLink}>Terms of Service</Text>

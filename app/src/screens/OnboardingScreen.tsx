@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, Pressable, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import { View, Text, Pressable, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Linking } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useGame } from "../state/store";
 import * as SFX from "../lib/sfx";
+import { LEGAL_URLS } from "../lib/legal";
 import Logo from "../components/Logo";
 import { goldGradient, useThemeC, type Palette } from "../theme";
 
@@ -12,10 +13,13 @@ export default function OnboardingScreen() {
   const styles = makeStyles(C);
   const setUsername = useGame((s) => s.setUsername);
   const [name, setName] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [busy, setBusy] = useState(false);
 
+  const canStart = name.trim().length >= 2 && agreed && !busy;
+
   const go = async () => {
-    if (busy) return;
+    if (!canStart) return;
     setBusy(true);
     SFX.play("go");
     await setUsername(name);
@@ -29,27 +33,55 @@ export default function OnboardingScreen() {
         </View>
 
         <Text style={styles.title}>Welcome to Brain Blitz</Text>
-        <Text style={styles.subtitle}>What should we call you? This is the name other players will see.</Text>
+        <Text style={styles.subtitle}>Pick a nickname (no real personal info needed) that other players will see.</Text>
 
         <TextInput
           value={name}
           onChangeText={setName}
-          placeholder="Your name"
+          placeholder="Your nickname"
           placeholderTextColor={C.muted}
           autoCapitalize="words"
           autoCorrect={false}
           maxLength={16}
           style={styles.input}
-          returnKeyType="go"
-          onSubmitEditing={go}
+          returnKeyType="done"
         />
 
-        <Pressable onPress={go} disabled={name.trim().length < 2 || busy} style={{ width: "100%" }}>
+        <Pressable
+          onPress={() => {
+            SFX.play("tap");
+            setAgreed((a) => !a);
+          }}
+          style={styles.consentRow}
+        >
+          <View style={[styles.checkbox, agreed && styles.checkboxChecked]}>
+            {agreed ? <Text style={styles.checkmark}>✓</Text> : null}
+          </View>
+          <Text style={styles.consentText}>
+            I am 18+ or have{" "}
+            <Text style={styles.consentBold}>parent/guardian permission</Text>, and agree to the{" "}
+            <Text
+              style={styles.consentLink}
+              onPress={() => Linking.openURL(LEGAL_URLS.privacy)}
+            >
+              Privacy Policy
+            </Text>{" "}
+            &{" "}
+            <Text
+              style={styles.consentLink}
+              onPress={() => Linking.openURL(LEGAL_URLS.terms)}
+            >
+              Terms of Service
+            </Text>.
+          </Text>
+        </Pressable>
+
+        <Pressable onPress={go} disabled={!canStart} style={{ width: "100%" }}>
           <LinearGradient
             colors={goldGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
-            style={[styles.btn, (name.trim().length < 2 || busy) && { opacity: 0.5 }]}
+            style={[styles.btn, !canStart && { opacity: 0.45 }]}
           >
             <Text style={styles.btnText}>Start Playing</Text>
           </LinearGradient>
@@ -70,6 +102,48 @@ const makeStyles = (C: Palette) => StyleSheet.create({
   input: {
     width: "100%", backgroundColor: C.surface, borderColor: C.line, borderWidth: 1.5, borderRadius: 16,
     color: C.text, fontSize: 20, fontWeight: "800", textAlign: "center", paddingVertical: 16,
+  },
+  consentRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 10,
+    width: "100%",
+    paddingHorizontal: 4,
+    marginTop: 2,
+  },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: C.accent,
+    backgroundColor: C.surface,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 1,
+  },
+  checkboxChecked: {
+    backgroundColor: C.accent,
+  },
+  checkmark: {
+    color: C.goldText,
+    fontWeight: "900",
+    fontSize: 14,
+  },
+  consentText: {
+    flex: 1,
+    color: C.muted,
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  consentBold: {
+    color: C.text,
+    fontWeight: "800",
+  },
+  consentLink: {
+    color: C.accent,
+    fontWeight: "800",
+    textDecorationLine: "underline",
   },
   btn: { borderRadius: 16, paddingVertical: 17, alignItems: "center", marginTop: 4 },
   btnText: { color: C.goldText, fontWeight: "900", fontSize: 18 },

@@ -2,8 +2,9 @@
   "expo": {
     "name": "Brain Blitz",
     "slug": "mathblitz",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
+    "icon": "./assets/icon.png",
     "scheme": "mathblitz",
     "userInterfaceStyle": "dark",
     "assetBundlePatterns": [
@@ -11,13 +12,30 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mathblitz.app"
+      "bundleIdentifier": "com.anurag.brainblitz",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "LSApplicationQueriesSchemes": [
+          "upi",
+          "gpay",
+          "phonepe",
+          "paytmmp",
+          "bhim"
+        ]
+      }
     },
     "android": {
-      "package": "com.mathblitz.app",
+      "package": "com.anurag.brainblitz",
+      "versionCode": 1,
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#17112E"
-      }
+      },
+      "permissions": [
+        "INTERNET",
+        "VIBRATE"
+      ]
     },
     "web": {
       "bundler": "metro"
@@ -30,6 +48,8 @@
       [
         "expo-splash-screen",
         {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#17112E"
         }

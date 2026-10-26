@@ -60,6 +60,7 @@ export default function MatchScreen() {
   const advanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastTickRef = useRef(0);
   const qIdxRef = useRef(0);
+  const shownAtRef = useRef(Date.now());
   const reviewRef = useRef<ReviewItem[]>([]);
 
   // Animated values
@@ -131,8 +132,9 @@ export default function MatchScreen() {
   function loadQuestion() {
     setChosen(null);
     lockedRef.current = false;
-    // Friends mode plays a shared, pre-generated set (same on every device).
-    const next = isFriends ? activeQuestions[qIdxRef.current] ?? nextQuestion(pool) : nextQuestion(pool);
+    shownAtRef.current = Date.now();
+    // Staked & Friends modes play from a deterministic server-seeded set.
+    const next = activeQuestions.length > 0 ? activeQuestions[qIdxRef.current] ?? nextQuestion(pool) : nextQuestion(pool);
     qIdxRef.current += 1;
     setQ(next);
     setQNo((n) => n + 1);
@@ -144,9 +146,10 @@ export default function MatchScreen() {
   function answer(val: string) {
     if (lockedRef.current || finishedRef.current || !q) return;
     lockedRef.current = true;
+    const ms = Math.max(1, Date.now() - shownAtRef.current);
     const right = val === q.a;
     attemptedRef.current += 1;
-    reviewRef.current.push({ q: q.q, tag: q.tag, unit: q.unit, chosen: val, correct: q.a, ok: right });
+    reviewRef.current.push({ q: q.q, tag: q.tag, unit: q.unit, chosen: val, correct: q.a, ok: right, ms });
     if (right) {
       scoreRef.current += 3;
       correctRef.current += 1;

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brain Blitz — Internal Ops & Telemetry Console</title>
+  <style>
+    :root {
+      --bg: #0f0a1c;
+      --card: #1a1330;
+      --border: #31255a;
+      --text: #f1ecff;
+      --muted: #a99fd0;
+      --accent: #ffc53d;
+      --good: #34d399;
+      --bad: #fb7185;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 28px;
+      line-height: 1.5;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { font-size: 24px; font-weight: 900; color: var(--accent); }
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    input {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 10px;
+      width: 340px;
+      font-size: 13px;
+    }
+    button {
+      background: var(--accent);
+      color: #1f1400;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .stat-label { color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+    .stat-val { font-size: 28px; font-weight: 900; margin-top: 4px; }
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    h2 { font-size: 18px; margin-bottom: 12px; color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 700; }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .pill-err { background: rgba(251, 113, 133, 0.2); color: var(--bad); }
+    .pill-ok { background: rgba(52, 211, 153, 0.2); color: var(--good); }
+    pre {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 90px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>⚡ Brain Blitz — Ops & Telemetry Console</h1>
+      <p style="color: var(--muted); font-size: 13px;">Internal Admin Viewer (Keep in /audit — never host publicly)</p>
+    </div>
+    <div class="controls">
+      <input id="srvKey" type="password" placeholder="Paste Supabase service_role key to load live logs..." />
+      <button onclick="loadAll()">Load Live Data</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="stat-card">
+      <div class="stat-label">Crash / Error Logs</div>
+      <div class="stat-val" id="statErrors">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Question Reports (🚩)</div>
+      <div class="stat-val" id="statReports">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Completed Purchases</div>
+      <div class="stat-val" id="statPurchases">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Revenue (INR)</div>
+      <div class="stat-val" id="statRevenue">—</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🚨 Recent Crash & Error Logs (app_logs)</h2>
+    <table>
+      <thead>
+        <tr><th>Time</th><th>Level</th><th>Message</th><th>Details / Stack</th></tr>
+      </thead>
+      <tbody id="logsBody">
+        <tr><td colspan="4" style="color: var(--muted);">Enter your Supabase service_role key above to fetch live crash logs.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>🚩 Flagged Question Reports (question_reports)</h2>
+    <table>
+      <thead>
+        <tr><th>Time</th><th>Reason</th><th>Subject / Tag</th><th>Question & Options</th></tr>
+      </thead>
+      <tbody id="reportsBody">
+        <tr><td colspan="4" style="color: var(--muted);">No data loaded yet.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>💳 Recent Purchases (purchases)</h2>
+    <table>
+      <thead>
+        <tr><th>Time</th><th>Pack</th><th>Amount</th><th>Status</th><th>Order / Payment ID</th></tr>
+      </thead>
+      <tbody id="purchasesBody">
+        <tr><td colspan="5" style="color: var(--muted);">No data loaded yet.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://wymzqacylinwcckxosgw.supabase.co";
+
+    async function fetchTable(table, query, key) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+        },
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return res.json();
+    }
+
+    async function loadAll() {
+      const key = document.getElementById("srvKey").value.trim();
+      if (!key) return alert("Please paste your Supabase service_role secret key.");
+
+      try {
+        const [logs, reports, purchases] = await Promise.all([
+          fetchTable("app_logs", "select=*&order=created_at.desc&limit=50", key),
+          fetchTable("question_reports", "select=*&order=created_at.desc&limit=50", key),
+          fetchTable("purchases", "select=*&order=created_at.desc&limit=50", key),
+        ]);
+
+        const errs = logs.filter((l) => l.level === "error");
+        const completed = purchases.filter((p) => p.status === "completed");
+        const rev = completed.reduce((acc, p) => acc + (p.amount_inr || 0), 0);
+
+        document.getElementById("statErrors").textContent = errs.length;
+        document.getElementById("statReports").textContent = reports.length;
+        document.getElementById("statPurchases").textContent = completed.length;
+        document.getElementById("statRevenue").textContent = "₹" + rev;
+
+        document.getElementById("logsBody").innerHTML =
+          logs.map((l) => `
+            <tr>
+              <td>${new Date(l.created_at).toLocaleString()}</td>
+              <td><span class="pill ${l.level === "error" ? "pill-err" : "pill-ok"}">${l.level}</span></td>
+              <td><strong>${l.message || ""}</strong></td>
+              <td><pre>${l.stack || JSON.stringify(l.extra || {})}</pre></td>
+            </tr>
+          `).join("") || '<tr><td colspan="4">No logs recorded yet! 🎉</td></tr>';
+
+        document.getElementById("reportsBody").innerHTML =
+          reports.map((r) => `
+            <tr>
+              <td>${new Date(r.created_at).toLocaleString()}</td>
+              <td><span class="pill pill-err">${r.reason}</span></td>
+              <td>${r.subject || ""} · ${r.tag || ""}</td>
+              <td><strong>${r.question_text}</strong><br/><span style="color:var(--muted)">Ans: ${r.correct_answer} | Chosen: ${r.chosen_answer || "none"}</span></td>
+            </tr>
+          `).join("") || '<tr><td colspan="4">No question reports yet.</td></tr>';
+
+        document.getElementById("purchasesBody").innerHTML =
+          purchases.map((p) => `
+            <tr>
+              <td>${new Date(p.created_at).toLocaleString()}</td>
+              <td>${p.pack_id} (${p.coins} ₵)</td>
+              <td>₹${p.amount_inr}</td>
+              <td><span class="pill ${p.status === "completed" ? "pill-ok" : "pill-err"}">${p.status}</span></td>
+              <td>${p.order_id || ""}<br/><span style="color:var(--muted)">${p.payment_id || ""}</span></td>
+            </tr>
+          `).join("") || '<tr><td colspan="5">No purchases yet.</td></tr>';
+      } catch (e) {
+        alert("Failed to load: " + e.message);
+      }
+    }
+  </script>
+</body>
+</html>

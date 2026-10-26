@@ -18,6 +18,7 @@ export default function StoreScreen() {
   const styles = makeStyles(C);
   const { coins, closeStore, claimAd, completePurchase, username } = useGame();
   const [busy, setBusy] = useState(false);
+  const [pendingPack, setPendingPack] = useState<CoinPack | null>(null);
   const [activePack, setActivePack] = useState<CoinPack | null>(null);
   const [activeOrder, setActiveOrder] = useState<string | null>(null);
   const [activeKeyId, setActiveKeyId] = useState<string | null>(null);
@@ -53,8 +54,16 @@ export default function StoreScreen() {
     }
   };
 
-  const buy = async (pack: CoinPack) => {
+  const buy = (pack: CoinPack) => {
     if (busy) return;
+    SFX.play("tap");
+    setPendingPack(pack);
+  };
+
+  const confirmAndProceedBuy = async () => {
+    if (!pendingPack || busy) return;
+    const pack = pendingPack;
+    setPendingPack(null);
     SFX.play("tap");
     setBusy(true);
 
@@ -213,6 +222,21 @@ export default function StoreScreen() {
           onFailure={onPaymentFailure}
         />
       )}
+
+      <AppDialog
+        visible={!!pendingPack}
+        emoji="👨‍👩‍👧"
+        title="Parent / Adult Confirmation"
+        message={
+          pendingPack
+            ? `Purchase ${pendingPack.label} for ₹${pendingPack.priceInr}?\n\nVirtual coins have no real-world monetary value and cannot be cashed out. Players under 18 must have parent or guardian approval.`
+            : ""
+        }
+        confirmText="Approved · Continue"
+        cancelText="Cancel"
+        onConfirm={confirmAndProceedBuy}
+        onCancel={() => setPendingPack(null)}
+      />
 
       <AppDialog
         visible={!!dlg}

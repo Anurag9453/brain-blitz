@@ -306,20 +306,41 @@ export async function fetchProgress(): Promise<ProgressRow[]> {
   return (data ?? []) as ProgressRow[];
 }
 
+export interface AnswerLogEntry {
+  chosen: string | null;
+  ok: boolean;
+  ms: number;
+}
+
 export async function startMatch(
   level: number
-): Promise<{ match_id: string; coins: number }> {
+): Promise<{ match_id: string; coins: number; seed?: number }> {
   const { data, error } = await supabase.rpc("start_match", { p_level: level });
   if (error) throw error;
-  return data as { match_id: string; coins: number };
+  return data as { match_id: string; coins: number; seed?: number };
 }
 
 export async function finishMatch(
   matchId: string,
   correct: number,
   wrong: number,
-  attempted: number
+  attempted: number,
+  answerLog?: AnswerLogEntry[]
 ): Promise<FinishResult> {
+  if (answerLog && answerLog.length > 0) {
+    const { data, error } = await supabase.rpc("finish_match", {
+      p_match_id: matchId,
+      p_correct: correct,
+      p_wrong: wrong,
+      p_attempted: attempted,
+      p_answer_log: answerLog,
+    });
+    if (!error) return data as FinishResult;
+    // Fallback if migration 0028 is not applied yet
+    if (!error.message?.includes("p_answer_log") && error.code !== "PGRST202") {
+      throw error;
+    }
+  }
   const { data, error } = await supabase.rpc("finish_match", {
     p_match_id: matchId,
     p_correct: correct,
@@ -334,18 +355,32 @@ export async function startDuel(
   level: number,
   mode: DuelMode,
   seconds: number
-): Promise<{ match_id: string; coins: number; opponent_target: number }> {
+): Promise<{ match_id: string; coins: number; opponent_target: number; seed?: number }> {
   const { data, error } = await supabase.rpc("start_duel", { p_level: level, p_mode: mode, p_seconds: seconds });
   if (error) throw error;
-  return data as { match_id: string; coins: number; opponent_target: number };
+  return data as { match_id: string; coins: number; opponent_target: number; seed?: number };
 }
 
 export async function finishDuel(
   matchId: string,
   correct: number,
   wrong: number,
-  attempted: number
+  attempted: number,
+  answerLog?: AnswerLogEntry[]
 ): Promise<DuelResult> {
+  if (answerLog && answerLog.length > 0) {
+    const { data, error } = await supabase.rpc("finish_duel", {
+      p_match_id: matchId,
+      p_correct: correct,
+      p_wrong: wrong,
+      p_attempted: attempted,
+      p_answer_log: answerLog,
+    });
+    if (!error) return data as DuelResult;
+    if (!error.message?.includes("p_answer_log") && error.code !== "PGRST202") {
+      throw error;
+    }
+  }
   const { data, error } = await supabase.rpc("finish_duel", {
     p_match_id: matchId,
     p_correct: correct,

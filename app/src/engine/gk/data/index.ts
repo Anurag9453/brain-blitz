@@ -8,5 +8,6 @@ import { PARTS as world } from "./world";
 import { PARTS as culture } from "./culture";
 import { PARTS as economy } from "./economy";
 import { PARTS as sports } from "./sports";
+import { FOUNDATIONS } from "./foundations";
 
-export const GK_DATA: GkData[] = [...history, ...geography, ...polity, ...scitech, ...world, ...culture, ...economy, ...sports];
+export const GK_DATA: GkData[] = [...FOUNDATIONS, ...history, ...geography, ...polity, ...scitech, ...world, ...culture, ...economy, ...sports];
