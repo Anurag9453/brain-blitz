@@ -51,7 +51,7 @@ export default function ReviewScreen() {
       setDlg({
         emoji: "🙏",
         title: "Report Submitted",
-        message: "Thank you for helping us keep MathBlitz accurate! Our academic team will review this question.",
+        message: "Thank you for helping us keep GyanBlitz accurate! Our academic team will review this question.",
       });
     } catch {
       setDlg({

@@ -96,7 +96,7 @@ export default function HowToScreen() {
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>🛡️ Privacy, Fair Play & Support</Text>
-          <Text style={styles.line}>• Child-directed & privacy-first: MathBlitz never sells or shares player personal information.</Text>
+          <Text style={styles.line}>• Child-directed & privacy-first: GyanBlitz never sells or shares player personal information.</Text>
           <Text style={styles.line}>• Maths & Science questions are procedurally generated for school syllabus levels (Classes 6–10). General Knowledge questions cover curated school topics — use the 🚩 Report button anytime to flag an issue.</Text>
           <Text style={styles.line}>
             • Found an issue or need help? Contact us at{" "}

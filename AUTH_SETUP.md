@@ -1,4 +1,4 @@
-# Brain Blitz — Google & Apple Sign-In (drop-in guide)
+# GyanBlitz — Google & Apple Sign-In (drop-in guide)
 
 **Status: not active yet.** The app currently uses name-based sign-in on a
 device-persistent anonymous account. Do this when you move to an **EAS dev
@@ -35,7 +35,7 @@ Apple also needs the entitlement — add to `app/app.json`:
 ```json
 "ios": {
   "supportsTablet": true,
-  "bundleIdentifier": "com.mathblitz.app",
+  "bundleIdentifier": "com.anurag.gyanblitz",
   "usesAppleSignIn": true
 }
 ```
@@ -47,14 +47,14 @@ Apple also needs the entitlement — add to `app/app.json`:
 1. console.cloud.google.com → create/select a project.
 2. **APIs & Services → Credentials → Create OAuth client ID**, make THREE:
    - **Web** client → used by Supabase + as `webClientId` in the app.
-   - **iOS** client (bundle id `com.mathblitz.app`) → `iosClientId`.
-   - **Android** client (package `com.mathblitz.app` + your SHA-1 from EAS).
+   - **iOS** client (bundle id `com.anurag.gyanblitz`) → `iosClientId`.
+   - **Android** client (package `com.anurag.gyanblitz` + your SHA-1 from EAS).
 3. Note the **Web client ID + secret** (for Supabase) and the **iOS/Web client IDs** (for the app).
 
 ## Step 3 — Apple credentials
 
 1. developer.apple.com → **Certificates, Identifiers & Profiles**.
-2. Enable **Sign in with Apple** on your App ID (`com.mathblitz.app`).
+2. Enable **Sign in with Apple** on your App ID (`com.anurag.gyanblitz`).
 3. Create a **Services ID** + a **Sign in with Apple key** (.p8) — Supabase needs these.
 
 ## Step 4 — Supabase provider config

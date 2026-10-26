@@ -1,18 +1,18 @@
-# Brain Blitz — App Store & Google Play Submission Kit
+# GyanBlitz — App Store & Google Play Submission Kit
 
-This document contains ready-to-paste metadata, descriptions, compliance questionnaire answers, and build commands for submitting **Brain Blitz** (`com.anurag.brainblitz`) to Google Play Console and Apple App Store Connect.
+This document contains ready-to-paste metadata, descriptions, compliance questionnaire answers, and build commands for submitting **GyanBlitz** (`com.anurag.gyanblitz`) to Google Play Console and Apple App Store Connect.
 
 ---
 
 ## 1. Store Metadata & Copy
 
-- **App Name:** Brain Blitz: Maths, Science & GK Quiz
-- **Short Title (App Store):** Brain Blitz
+- **App Name:** GyanBlitz: Maths, Science & GK Quiz
+- **Short Title (App Store):** GyanBlitz
 - **Subtitle (App Store - 30 chars):** Fast Maths, Science & GK Duels
-- **Bundle ID / Package Name:** `com.anurag.brainblitz`
+- **Bundle ID / Package Name:** `com.anurag.gyanblitz`
 - **Primary Category:** Games → Trivia / Educational
 - **Secondary Category:** Education
-- **Support Email:** `anurag94533@gmail.com`
+- **Support Email:** `support@gyanblitz.app`
 - **Privacy Policy URL:** `https://anurag9453.github.io/brain-blitz/privacy-policy.html`
 - **Terms of Service URL:** `https://anurag9453.github.io/brain-blitz/terms-of-service.html`
 
@@ -23,9 +23,9 @@ Fast-paced mental maths, physics, chemistry & GK battles for Classes 6 to 10!
 
 ### Full Description (Google Play & App Store — < 4,000 chars)
 ```text
-Sharpen your mind and race the clock in Brain Blitz — the ultimate mental Maths, Physics, Chemistry, and General Knowledge arcade quiz game designed around school curriculum standards (Classes 6–10)!
+Sharpen your mind and race the clock in GyanBlitz — the ultimate mental Maths, Physics, Chemistry, and General Knowledge arcade quiz game designed around school curriculum standards (Classes 6–10)!
 
-Whether you're warming up for exams, challenging friends in real-time rooms, or climbing the weekly leagues, Brain Blitz turns speed calculation and general knowledge into an electrifying 60-second sport.
+Whether you're warming up for exams, challenging friends in real-time rooms, or climbing the weekly leagues, GyanBlitz turns speed calculation and general knowledge into an electrifying 60-second sport.
 
 ⚡ FOUR CORE SUBJECTS + MIXED MODE
 • Mental Maths: Arithmetic, fractions, percentages, algebra, geometry, mensuration, exponents, and word problems.
@@ -87,7 +87,7 @@ maths,mental math,quiz,gk,science,physics,chemistry,ncert,brain training,trivia,
 ## 4. App Review Notes (Copy-Paste for Apple / Google Reviewers)
 
 ```text
-Thank you for reviewing Brain Blitz!
+Thank you for reviewing GyanBlitz!
 
 1. Instant Access (No Login Wall):
    - On first launch, enter any nickname (2+ characters), check the consent box, and tap "Start Playing".

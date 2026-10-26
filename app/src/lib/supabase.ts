@@ -8,7 +8,7 @@ const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 if (!url || !anonKey) {
   // Fail loud and early — a missing key silently breaks every request.
   console.warn(
-    "[MathBlitz] Missing EXPO_PUBLIC_SUPABASE_URL / EXPO_PUBLIC_SUPABASE_ANON_KEY. " +
+    "[GyanBlitz] Missing EXPO_PUBLIC_SUPABASE_URL / EXPO_PUBLIC_SUPABASE_ANON_KEY. " +
       "Copy .env.example to .env and fill in your project values."
   );
 }

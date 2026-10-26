@@ -1,4 +1,4 @@
-// Synthesises MathBlitz's sound effects as small mono 16-bit WAV files.
+// Synthesises GyanBlitz's sound effects as small mono 16-bit WAV files.
 // No external/licensed assets — run with: node scripts/gen-sounds.js
 const fs = require("fs");
 const path = require("path");

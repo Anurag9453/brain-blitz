@@ -81,7 +81,7 @@ export function getRazorpayCheckoutHtml(params: {
         key: "${params.keyId}",
         amount: ${amountPaise},
         currency: "INR",
-        name: "MathBlitz",
+        name: "GyanBlitz",
         description: "${params.packName}",
         image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
         ${orderProp}

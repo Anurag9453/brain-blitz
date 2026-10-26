@@ -1,7 +1,7 @@
 import React, { useId } from "react";
 import Svg, { Defs, LinearGradient, Stop, Rect, Path, Line } from "react-native-svg";
 
-// Brain Blitz mark — "Spark Book": an open book with a spark rising from it.
+// GyanBlitz mark — "Spark Book": an open book with a spark rising from it.
 // Drawn as a vector so it stays crisp at any size (splash, onboarding, icon).
 export default function Logo({ size = 96 }: { size?: number }) {
   const raw = useId().replace(/:/g, ""); // unique gradient ids per instance

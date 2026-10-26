@@ -1,4 +1,4 @@
-# Brain Blitz — Rewarded Ads & Coin Top-ups (drop-in guide)
+# GyanBlitz — Rewarded Ads & Coin Top-ups (drop-in guide)
 
 **Status: the in-app UI is live; the real ad/payment SDKs are not.** Do this at
 the **EAS dev-build / pre-launch** stage (they don't run in Expo Go).
@@ -37,7 +37,7 @@ What this guide adds at build time:
    ```
    Keep `claimAd()` (the server cap) as the source of truth for the coins.
 
-**Important — kids & ads:** Brain Blitz's audience is minors. In AdMob, tag the
+**Important — kids & ads:** GyanBlitz's audience is minors. In AdMob, tag the
 app **child-directed / for families**, request **non-personalised** ads, and
 ensure no gambling/alcohol categories. (COPPA / Google Families policy.)
 

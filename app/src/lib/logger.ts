@@ -30,7 +30,7 @@ export async function logError(
     extra,
   };
 
-  console.error(`[MathBlitz ERROR] ${entry.timestamp}:`, message, stack, extra);
+  console.error(`[GyanBlitz ERROR] ${entry.timestamp}:`, message, stack, extra);
 
   // 1. Store locally in AsyncStorage for offline crash recovery & support inspection
   try {

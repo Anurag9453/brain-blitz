@@ -32,7 +32,7 @@ export default function OnboardingScreen() {
           <Logo size={92} />
         </View>
 
-        <Text style={styles.title}>Welcome to Brain Blitz</Text>
+        <Text style={styles.title}>Welcome to GyanBlitz</Text>
         <Text style={styles.subtitle}>Pick a nickname (no real personal info needed) that other players will see.</Text>
 
         <TextInput

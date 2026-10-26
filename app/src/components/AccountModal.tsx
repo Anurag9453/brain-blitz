@@ -210,7 +210,7 @@ export default function AccountModal({ visible, onClose }: AccountModalProps) {
                 // Guest Account: Link or Sign In
                 <View>
                   <Text style={styles.guestNotice}>
-                    ⚠️ You are playing as a Guest. If you reinstall MathBlitz or switch devices, your coins and progress will be lost.
+                    ⚠️ You are playing as a Guest. If you reinstall GyanBlitz or switch devices, your coins and progress will be lost.
                   </Text>
 
                   <View style={styles.tabBar}>

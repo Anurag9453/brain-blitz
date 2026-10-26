@@ -55,7 +55,7 @@ export default class ErrorBoundary extends Component<Props, State> {
     const errorText = this.state.error?.message || "Unknown error";
     const stackText = this.state.error?.stack || "";
     const body = encodeURIComponent(
-      `Hello MathBlitz Support,\n\nI encountered the following issue while playing:\n\nError: ${errorText}\n\nStack:\n${stackText.substring(0, 1000)}\n\nPlatform: ${Platform.OS} ${Platform.Version}`
+      `Hello GyanBlitz Support,\n\nI encountered the following issue while playing:\n\nError: ${errorText}\n\nStack:\n${stackText.substring(0, 1000)}\n\nPlatform: ${Platform.OS} ${Platform.Version}`
     );
     Linking.openURL(`mailto:${LEGAL_URLS.supportEmail}?subject=Crash%20Report&body=${body}`).catch(() => {});
   };

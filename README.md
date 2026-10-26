@@ -1,4 +1,4 @@
-# MathBlitz 🧮
+# GyanBlitz 🧮
 
 A fast, competitive **mental-maths arcade** for students (Classes 6–10). Timed
 matches, an unlockable level ladder, star ratings, and a coin economy — built

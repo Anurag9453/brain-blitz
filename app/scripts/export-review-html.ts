@@ -88,7 +88,7 @@ const html = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MathBlitz - GK Question Bank Review Sheet (${items.length} questions)</title>
+  <title>GyanBlitz - GK Question Bank Review Sheet (${items.length} questions)</title>
   <style>
     :root {
       --bg: #0F0A1C;
@@ -200,7 +200,7 @@ const html = `<!DOCTYPE html>
 <body>
   <div class="header">
     <div>
-      <h1>MathBlitz — GK Question Bank Review Sheet</h1>
+      <h1>GyanBlitz — GK Question Bank Review Sheet</h1>
       <p style="color:var(--muted); font-size:14px; margin-top:4px;">All ${items.length} verified general knowledge questions for human review and curriculum audit.</p>
     </div>
   </div>

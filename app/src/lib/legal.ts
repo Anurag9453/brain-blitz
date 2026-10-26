@@ -11,5 +11,5 @@ export const LEGAL_URLS = {
   home: `${BASE_URL}/`,
   privacy: `${BASE_URL}/privacy-policy.html`,
   terms: `${BASE_URL}/terms-of-service.html`,
-  supportEmail: process.env.EXPO_PUBLIC_SUPPORT_EMAIL || "anurag94533@gmail.com",
+  supportEmail: process.env.EXPO_PUBLIC_SUPPORT_EMAIL || "support@gyanblitz.app",
 };

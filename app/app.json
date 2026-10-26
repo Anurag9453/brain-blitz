@@ -1,18 +1,18 @@
 {
   "expo": {
-    "name": "Brain Blitz",
-    "slug": "mathblitz",
+    "name": "GyanBlitz",
+    "slug": "gyanblitz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "mathblitz",
+    "scheme": "gyanblitz",
     "userInterfaceStyle": "dark",
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anurag.brainblitz",
+      "bundleIdentifier": "com.anurag.gyanblitz",
       "buildNumber": "1",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
@@ -26,7 +26,7 @@
       }
     },
     "android": {
-      "package": "com.anurag.brainblitz",
+      "package": "com.anurag.gyanblitz",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

@@ -140,7 +140,7 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.hero}>
-        <Text style={styles.title}>BRAIN BLITZ</Text>
+        <Text style={styles.title}>GYANBLITZ</Text>
         {winStreak >= 2 && (
           <View style={styles.streakChip}>
             <Text style={styles.streakChipText}>🔥 {winStreak} win streak</Text>
