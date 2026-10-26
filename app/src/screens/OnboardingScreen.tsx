@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useGame } from "../state/store";
 import * as SFX from "../lib/sfx";
 import { LEGAL_URLS } from "../lib/legal";
+import { signInWithGoogle } from "../lib/socialAuth";
 import Logo from "../components/Logo";
 import { goldGradient, useThemeC, type Palette } from "../theme";
 
@@ -83,11 +84,28 @@ export default function OnboardingScreen() {
             end={{ x: 0, y: 1 }}
             style={[styles.btn, !canStart && { opacity: 0.45 }]}
           >
-            <Text style={styles.btnText}>Start Playing</Text>
+            <Text style={styles.btnText}>Start Playing as Guest</Text>
           </LinearGradient>
         </Pressable>
 
-        <Text style={styles.note}>You're signed in on this device — no password needed.</Text>
+        <View style={styles.dividerRow}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>or</Text>
+          <View style={styles.dividerLine} />
+        </View>
+
+        <Pressable
+          onPress={async () => {
+            SFX.play("tap");
+            await signInWithGoogle();
+          }}
+          style={styles.googleBtn}
+        >
+          <Text style={styles.googleG}>G</Text>
+          <Text style={styles.googleBtnText}>Continue with Google</Text>
+        </Pressable>
+
+        <Text style={styles.note}>Guest progress can be saved anytime in Account Settings.</Text>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -147,5 +165,42 @@ const makeStyles = (C: Palette) => StyleSheet.create({
   },
   btn: { borderRadius: 16, paddingVertical: 17, alignItems: "center", marginTop: 4 },
   btnText: { color: C.goldText, fontWeight: "900", fontSize: 18 },
+  dividerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    marginVertical: 4,
+    gap: 10,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: C.line,
+  },
+  dividerText: {
+    color: C.muted,
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  googleBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
+    paddingVertical: 15,
+    gap: 10,
+  },
+  googleG: {
+    fontSize: 18,
+    fontWeight: "900",
+    color: "#4285F4",
+  },
+  googleBtnText: {
+    color: "#1f1f1f",
+    fontWeight: "800",
+    fontSize: 16,
+  },
   note: { color: C.muted, fontSize: 12, textAlign: "center", marginTop: 6 },
 });

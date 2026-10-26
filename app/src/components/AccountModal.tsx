@@ -15,6 +15,7 @@ import { useGame } from "../state/store";
 import { useThemeC, type Palette } from "../theme";
 import * as SFX from "../lib/sfx";
 import * as Haptics from "expo-haptics";
+import { signInWithGoogle, signInWithApple, isAppleSignInSupported } from "../lib/socialAuth";
 
 interface AccountModalProps {
   visible: boolean;
@@ -33,6 +34,55 @@ export default function AccountModal({ visible, onClose }: AccountModalProps) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [appleAvailable, setAppleAvailable] = useState(false);
+
+  React.useEffect(() => {
+    isAppleSignInSupported().then(setAppleAvailable).catch(() => {});
+  }, []);
+
+  const handleGoogleSignIn = async () => {
+    setErrorMsg(null);
+    setSuccessMsg(null);
+    setBusy(true);
+    SFX.play("tap");
+    try {
+      const res = await signInWithGoogle();
+      if (res.ok) {
+        SFX.play("correct");
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+        setSuccessMsg("Signed in with Google! Restoring profile...");
+        setTimeout(() => onClose(), 1200);
+      } else if (res.message) {
+        setErrorMsg(res.message);
+      }
+    } catch (e: any) {
+      setErrorMsg(e?.message || "Google sign-in failed.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleAppleSignIn = async () => {
+    setErrorMsg(null);
+    setSuccessMsg(null);
+    setBusy(true);
+    SFX.play("tap");
+    try {
+      const res = await signInWithApple();
+      if (res.ok) {
+        SFX.play("correct");
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+        setSuccessMsg("Signed in with Apple! Restoring profile...");
+        setTimeout(() => onClose(), 1200);
+      } else if (res.message) {
+        setErrorMsg(res.message);
+      }
+    } catch (e: any) {
+      setErrorMsg(e?.message || "Apple sign-in failed.");
+    } finally {
+      setBusy(false);
+    }
+  };
 
   if (!visible) return null;
 
@@ -212,6 +262,34 @@ export default function AccountModal({ visible, onClose }: AccountModalProps) {
                   <Text style={styles.guestNotice}>
                     ⚠️ You are playing as a Guest. If you reinstall GyanBlitz or switch devices, your coins and progress will be lost.
                   </Text>
+
+                  {/* 1-Tap Google Sign-In */}
+                  <Pressable
+                    onPress={handleGoogleSignIn}
+                    disabled={busy}
+                    style={styles.googleSocialBtn}
+                  >
+                    <Text style={styles.googleG}>G</Text>
+                    <Text style={styles.googleSocialText}>Continue with Google</Text>
+                  </Pressable>
+
+                  {/* 1-Tap Apple Sign-In (iOS) */}
+                  {appleAvailable && (
+                    <Pressable
+                      onPress={handleAppleSignIn}
+                      disabled={busy}
+                      style={styles.appleSocialBtn}
+                    >
+                      <Text style={styles.appleIcon}></Text>
+                      <Text style={styles.appleSocialText}>Continue with Apple</Text>
+                    </Pressable>
+                  )}
+
+                  <View style={styles.dividerRow}>
+                    <View style={styles.dividerLine} />
+                    <Text style={styles.dividerText}>or with email</Text>
+                    <View style={styles.dividerLine} />
+                  </View>
 
                   <View style={styles.tabBar}>
                     <Pressable
@@ -396,6 +474,63 @@ const makeStyles = (C: Palette) =>
       lineHeight: 18,
       marginBottom: 16,
       fontWeight: "600",
+    },
+    googleSocialBtn: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#ffffff",
+      borderRadius: 14,
+      paddingVertical: 14,
+      gap: 10,
+      marginBottom: 10,
+    },
+    googleG: {
+      fontSize: 18,
+      fontWeight: "900",
+      color: "#4285F4",
+    },
+    googleSocialText: {
+      color: "#1f1f1f",
+      fontWeight: "800",
+      fontSize: 15,
+    },
+    appleSocialBtn: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#000000",
+      borderColor: "#333333",
+      borderWidth: 1,
+      borderRadius: 14,
+      paddingVertical: 14,
+      gap: 10,
+      marginBottom: 10,
+    },
+    appleIcon: {
+      fontSize: 18,
+      color: "#ffffff",
+    },
+    appleSocialText: {
+      color: "#ffffff",
+      fontWeight: "800",
+      fontSize: 15,
+    },
+    dividerRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginVertical: 12,
+      gap: 10,
+    },
+    dividerLine: {
+      flex: 1,
+      height: 1,
+      backgroundColor: C.line,
+    },
+    dividerText: {
+      color: C.muted,
+      fontSize: 12,
+      fontWeight: "700",
     },
     tabBar: {
       flexDirection: "row",

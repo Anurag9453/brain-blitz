@@ -14,6 +14,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.anurag.gyanblitz",
       "buildNumber": "1",
+      "usesAppleSignIn": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "LSApplicationQueriesSchemes": [
@@ -45,6 +46,9 @@
       "expo-audio",
       "expo-localization",
       "expo-status-bar",
+      "@react-native-google-signin/google-signin",
+      "expo-apple-authentication",
+      "expo-web-browser",
       [
         "expo-splash-screen",
         {
