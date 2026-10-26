@@ -4,12 +4,12 @@ import * as Haptics from "expo-haptics";
 import Logo from "../components/Logo";
 import { useThemeC, type Palette } from "../theme";
 
-// "BRAIN" drops from the top, "BLITZ" rises from the bottom, they meet in the
+// "GYAN" drops from the top, "BLITZ" rises from the bottom, they meet in the
 // middle, bounce twice, then the logo (a book + lightning) pops in.
 export default function SplashScreen({ onDone }: { onDone: () => void }) {
   const C = useThemeC();
   const styles = makeStyles(C);
-  const brainY = useRef(new Animated.Value(-280)).current;
+  const gyanY = useRef(new Animated.Value(-280)).current;
   const blitzY = useRef(new Animated.Value(280)).current;
   const hop = useRef(new Animated.Value(0)).current;
   const logo = useRef(new Animated.Value(0)).current;
@@ -17,7 +17,7 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     Animated.sequence([
       Animated.parallel([
-        Animated.spring(brainY, { toValue: 0, friction: 6, tension: 80, useNativeDriver: true }),
+        Animated.spring(gyanY, { toValue: 0, friction: 6, tension: 80, useNativeDriver: true }),
         Animated.spring(blitzY, { toValue: 0, friction: 6, tension: 80, useNativeDriver: true }),
       ]),
       // two little jumps after they meet
@@ -40,7 +40,7 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
   return (
     <View style={styles.wrap}>
       <Animated.View style={{ transform: [{ translateY: hop }] }}>
-        <Animated.Text style={[styles.word, styles.brain, { transform: [{ translateY: brainY }] }]}>BRAIN</Animated.Text>
+        <Animated.Text style={[styles.word, styles.gyan, { transform: [{ translateY: gyanY }] }]}>GYAN</Animated.Text>
         <Animated.Text style={[styles.word, styles.blitz, { transform: [{ translateY: blitzY }] }]}>BLITZ</Animated.Text>
       </Animated.View>
 
@@ -54,6 +54,6 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
 const makeStyles = (C: Palette) => StyleSheet.create({
   wrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 34 },
   word: { fontWeight: "900", fontSize: 56, letterSpacing: 3, textAlign: "center", lineHeight: 58 },
-  brain: { color: C.text },
+  gyan: { color: C.text },
   blitz: { color: C.accent },
 });
