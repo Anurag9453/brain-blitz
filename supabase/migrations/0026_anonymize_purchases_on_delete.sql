@@ -1,12 +1,26 @@
 -- ============================================================================
 -- 0026_anonymize_purchases_on_delete.sql: Compliance & Tax-Retentive Deletion
 --
--- Preserves financial audit trails (order_id, amount_inr, timestamp) required
--- under statutory accounting / GST rules by setting user_id = null instead of
--- deleting the purchase row, while irreversibly purging all player profile data,
--- matches, and auth credentials.
+-- 1. Drops NOT NULL and modifies foreign key on purchases.user_id to ON DELETE SET NULL.
+-- 2. Updates delete_user_account() so financial purchase rows are anonymized
+--    (user_id set to NULL) instead of deleted, complying with tax/statutory audit
+--    record-retention rules while permanently wiping player data.
 -- ============================================================================
 
+-- 1. Relax NOT NULL constraint on purchases.user_id
+alter table if exists public.purchases 
+  alter column user_id drop not null;
+
+-- 2. Modify foreign key constraint to ON DELETE SET NULL
+alter table if exists public.purchases 
+  drop constraint if exists purchases_user_id_fkey;
+
+alter table if exists public.purchases
+  add constraint purchases_user_id_fkey
+  foreign key (user_id) references public.profiles(id)
+  on delete set null;
+
+-- 3. Replace delete_user_account() RPC
 create or replace function public.delete_user_account()
 returns jsonb
 language plpgsql
